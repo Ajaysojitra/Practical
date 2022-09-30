@@ -1,0 +1,73 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Jquery Datatable server side paging,sorting,filtering with example</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>
+    <script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            var table = $('#dtbl').DataTable({
+                scrollY: 300,
+                scroolX: 100,
+                aoColumns: [
+                    { 'data': 'Name' },
+                    { 'data': 'City' },
+                    { 'data': 'State' },
+                    { 'data': 'Country' },
+                ],
+                bFilter: true,//Enables Filtering
+                bServerSide: true,
+                sAjaxSource: "/Home/EmployeeList"
+
+            });
+
+            table.columns().eq(0).each(function (colIdx) {
+                $('input', table.column(colIdx).footer()).on('keyup change', function () {
+                    table
+                        .column(colIdx)
+                        .search(this.value)
+                        .draw();
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-12">
+                <table id="dtbl" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <th>Country</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <th><input type="search" placeholder="Search Name"></th>
+                            <th><input type="search" placeholder="Search city"> </th>
+                            <th><input type="search" placeholder="Search state"></th>
+                            <th><input type="search" placeholder="Search country"></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
